@@ -40,14 +40,17 @@ jobs:
 
     - name: Build Flask App
       run: |
-        # Run your actual build command here, if any
+        # Run your actual build command here
         echo "Flask app built successfully"
+        # Assuming your build outputs to 'output' directory
+        mkdir -p output
+        echo "Sample build file" > output/index.html
 
     - name: Upload Artifact
       uses: actions/upload-pages-artifact@v3
       with:
         name: flask-build-artifact
-        path: ./build  # Adjust this path to point to your build directory
+        path: ./output  # Adjust this to match your actual build output directory
 
   deploy:
     needs: build
