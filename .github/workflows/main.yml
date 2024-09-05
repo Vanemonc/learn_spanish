@@ -40,14 +40,14 @@ jobs:
 
     - name: Build Flask App
       run: |
-        # Assuming you have a build step or script, otherwise this step might be redundant
+        # Run your actual build command here, if any
         echo "Flask app built successfully"
 
     - name: Upload Artifact
       uses: actions/upload-pages-artifact@v3
       with:
         name: flask-build-artifact
-        path: .  # Adjust this path to point to your build directory or files to be uploaded
+        path: ./build  # Adjust this path to point to your build directory
 
   deploy:
     needs: build
@@ -59,7 +59,6 @@ jobs:
 
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Setup Pages
