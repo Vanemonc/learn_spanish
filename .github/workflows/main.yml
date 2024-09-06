@@ -32,11 +32,11 @@ jobs:
     - name: Prepare Deployment Directory
       run: |
         mkdir -p docs/static/images
+        rm -rf docs/static/*  # Elimina archivos existentes en docs/static/
         cp -r static/* docs/static/
-        cp templates/* docs/
+        mkdir -p docs
+        cp templates/index.html docs/
         cp README.md docs/
-        # Copy index.html to the root of the docs directory
-        cp docs/templates/index.html docs/index.html
 
     - name: List files for debugging
       run: |
