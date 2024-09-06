@@ -1,4 +1,4 @@
-name: Web Build + Deployment to GitHub Pages
+name: Build and Deploy Flask App to GitHub Pages
 
 on:
   push:
@@ -38,19 +38,25 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Build Flask App
+    - name: Prepare Deployment Directory
       run: |
-        # Run your actual build command here
-        echo "Flask app built successfully"
-        # Assuming your build outputs to 'output' directory
-        mkdir -p output
-        echo "Sample build file" > output/index.html
+        mkdir -p docs  # Create the docs directory where files will be copied
+        cp -r static docs/static
+        cp -r templates docs/templates
+        cp index.py docs/
+        cp README.md docs/
+        cp requirements.txt docs/
+        # Optionally copy other files as needed
+
+    - name: List files for debugging
+      run: |
+        ls -R docs
 
     - name: Upload Artifact
       uses: actions/upload-pages-artifact@v3
       with:
         name: flask-build-artifact
-        path: ./output  # Adjust this to match your actual build output directory
+        path: ./docs  # Upload the docs directory
 
   deploy:
     needs: build
