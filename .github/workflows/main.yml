@@ -1,4 +1,4 @@
-name: Web Build + Deployment to GitHub Pages
+name: Build and Deploy Flask App to GitHub Pages
 
 on:
   push:
@@ -38,16 +38,24 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Build Flask App
+    - name: Prepare Static Files for Deployment
       run: |
-        # Assuming you have a build step or script, otherwise this step might be redundant
-        echo "Flask app built successfully"
+        mkdir -p build
+        cp -r static build/
+        cp -r templates build/
+        cp index.py build/
+        cp README.md build/
+        cp requirements.txt build/
+
+    - name: List files for debugging
+      run: |
+        ls -R build
 
     - name: Upload Artifact
       uses: actions/upload-pages-artifact@v3
       with:
         name: flask-build-artifact
-        path: .  # Adjust this path to point to your build directory or files to be uploaded
+        path: ./build  # Adjust this if necessary to match your actual build output directory
 
   deploy:
     needs: build
@@ -59,7 +67,6 @@ jobs:
 
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Setup Pages
