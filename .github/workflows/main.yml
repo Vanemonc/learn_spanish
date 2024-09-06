@@ -38,25 +38,24 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    - name: Prepare Deployment Directory
+    - name: Prepare Static Files for Deployment
       run: |
-        mkdir -p docs  # Create the docs directory where files will be copied
-        cp -r static docs/static
-        cp -r templates docs/templates
-        cp index.py docs/
-        cp README.md docs/
-        cp requirements.txt docs/
-        # Optionally copy other files as needed
+        mkdir -p build
+        cp -r static build/
+        cp -r templates build/
+        cp index.py build/
+        cp README.md build/
+        cp requirements.txt build/
 
     - name: List files for debugging
       run: |
-        ls -R docs
+        ls -R build
 
     - name: Upload Artifact
       uses: actions/upload-pages-artifact@v3
       with:
         name: flask-build-artifact
-        path: ./docs  # Upload the docs directory
+        path: ./build  # Adjust this if necessary to match your actual build output directory
 
   deploy:
     needs: build
